@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <time.h>
+#include <iomanip>
 
 Budget::Budget() {}
 Budget::~Budget() {}
@@ -201,7 +202,7 @@ void Budget::changeBudget(Transaction &transaction) {
 }
 
 void Budget::openFileHistory() {
-    myFileHistory.open( getNameHistoryFile(localTime) , std::ios::out);
+    myFileHistory.open( getNameHistoryFile(localTime) , std::ios::app);
     myFileHistory.seekg(0 , std::ios::end);
     if (myFileHistory.tellg() == 0) {
         drawHeadlines();
@@ -217,22 +218,70 @@ void Budget::drawHeadlines() {
 }
 
 void Budget::saveTransactionToFileHistory(Transaction &transaction , LocalTime &localTime) {
-    for (int i = 0 ; i < 67 ; ++i) {
-        if ( i == 0 || i == 22 || i == 37 || i == 52 || i == 66) {
-            myFileHistory << '+';
-        }
-        else if (i == 5 ) {
-            myFileHistory << localTime.getTime();
-        }
-        else if (i == 24) {
-            myFileHistory << transaction.getWhereSpentMoney();
-        }
-        else if (i == 39) {
-            myFileHistory << transaction.getWhoMuchSpentMoney()*0.01;
-        }
-        else if (i == 54) {
-            myFileHistory << getBudget();
-        }
-
+    //clear setPrecisionSpentMoney
+    setPrecisionSpentMoney.str(std::string() );
+    setPrecisionSpentMoney.clear();
+    helpString = transaction.getWhereSpentMoney();
+    helpSpentMoney = transaction.getWhoMuchSpentMoney();
+    std::cout << helpSpentMoney << " DD" << std::endl;
+    helpSpentMoney *= 0.01;
+    setPrecisionSpentMoney << std::fixed << std::setprecision(2) << helpSpentMoney;
+    std::cout << helpSpentMoney << " D" << std::endl;
+    saveRecordTransaction = "+  " + localTime.getTime() + "   +";
+    if (helpString.size() > 4) {
+        std::cout << "wiecej" << std::endl;
+        saveRecordTransaction += "    " + transaction.getWhereSpentMoney() + "     +";
     }
+    else {
+        std::cout << "mniej" << std::endl;
+        saveRecordTransaction += "    " + transaction.getWhereSpentMoney() + "      +";
+    }
+    if (helpSpentMoney > 0) {
+        saveRecordTransaction += "   " + setPrecisionSpentMoney.str();
+        saveRecordTransaction += "       +";
+    }
+    else if (helpSpentMoney > 10) {
+        saveRecordTransaction += "   " + setPrecisionSpentMoney.str();
+        saveRecordTransaction += "    +";
+    }
+    else if (helpSpentMoney > 100) {
+        saveRecordTransaction += "   " + setPrecisionSpentMoney.str();
+        saveRecordTransaction += "   +";
+    }
+    else if (helpSpentMoney > 1000) {
+        saveRecordTransaction += "   " + setPrecisionSpentMoney.str();
+    }
+    setPrecisionSpentMoney.clear();
+    myFileHistory << saveRecordTransaction << std::endl;
+//    for (int i = 0 ; i < 69 ; ++i) {
+//        if ( i == 0 || i == 8 || i == 24 || i == 49) {
+//            myFileHistory << '+';
+//            ++i;
+//        }
+//        else if (i == 3 ) {
+//            myFileHistory << localTime.getTime();
+////            i += 9;
+//        }
+//        else if (i == 14) {
+//            myFileHistory << transaction.getWhereSpentMoney();
+//            i += 9;
+////            ++i;
+//        }
+//        else if (i == 39) {
+//            myFileHistory << transaction.getWhoMuchSpentMoney();
+////            i += 6;
+//        }
+//        else if (i == 56) {
+//            myFileHistory << getBudget();
+////            i += 7;
+//        }
+//        else if (i == 68) {
+//            myFileHistory << '+' << std::endl;
+////            ++i;
+//        }
+//        else {
+//            myFileHistory << ' ';
+////            ++i;
+//        }
+//    }
 }
