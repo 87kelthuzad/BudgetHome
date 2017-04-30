@@ -1,4 +1,5 @@
 #include "transaction.h"
+#include "exception.h"
 #include <iostream>
 //#include <fstream>
 #include <string>
@@ -16,22 +17,11 @@ void Transaction::PayCash(Budget &budget) {
     std::cout << "Sklep , Rynek , Inne" << std::endl;
     setWhereSpentMoney();
     std::cout << getWhereSpentMoney() << std::endl;
-//    std::cout << getWhereSpentMoney() + "d" << std::endl; wyjaśnienia czemu jak tak zrobię to w innej klasie mam tylko sklep a nie skelpd
     std::cout << "Ile zostalow wydanych pieniedzy: " << std::endl;
+    getline(std::cin , whoMuchSpentMoneyString);
+    whoMuchSpentMoney = std::stod(whoMuchSpentMoneyString.c_str());
     setWhoMuchSpentMoney(budget);
     std::cout << getWhoMuchSpentMoney() << std::endl;
-//    budget.setBudgetStart(budget.getBudgetStart() - getWhoMuchSpentMoney());
-
-//    std::cin >> spend;
-//    budget = budget - spend*100;
-//    t += std::to_string(spend) + " ";
-    //wyświetlenie budrzetu w formie 000.00
-//    ss.setf(std::ios_base::fixed);
-//    ss.precision(2);
-//    ss << budget*0.01;
-//    t += ss.str();
-//    std::cout << t << std::endl;
-//    return t;
 }
 
 void Transaction::setWhereSpentMoney() noexcept {
@@ -60,21 +50,77 @@ void Transaction::setWhereSpentMoney() noexcept {
         }
     }
 }
-
+//do sprawdzenia wywala bład jak podam wartosc np. s333.55
 void Transaction::setWhoMuchSpentMoney(Budget &budget) noexcept {
+    bool test = false;
+    int indexStep = 0;
+    int loopCount = 0;
+//    int index = 0;
     while (true) {
         try {
-//            std::cin.ignore();
-            std::cin >> whoMuchSpentMoney;
-            if (whoMuchSpentMoney <= 0) {
-                throw badWhoMuchSpentMoneyTooSmall();
-//                continue;
+            for (int i = 0 ; i < whoMuchSpentMoneyString.size() ; ++i) {
+                ++loopCount;
+                if (whoMuchSpentMoneyString[i] == '.') {
+                    indexStep = i;
+                    ++index;
+                    loopCount = 0;
+                }
             }
-            if ((whoMuchSpentMoney*100) > budget.getBudget()) {
-                throw badWhoMuchSpentMoneyIsGreaterThanBudget();
-//                continue;
+            for (int j = 0; j < whoMuchSpentMoneyString[j] ; ++j) {
+                if (test == true) {
+                    test = false;
+                    indexStep = 0;
+                    loopCount = 0;
+                    std::cout << "Podaj ile wydales pieniedzy: " << std::endl;
+                    getline(std::cin, whoMuchSpentMoneyString);
+                    whoMuchSpentMoney = std::stod(whoMuchSpentMoneyString.c_str())*100;
+                    continue;
+                }
+                else if (loopCount > 2 && index == 1 && test == false) {
+                    test = true;
+                    throw badWhoMuchSpentMoneyStringPlaceDot();
+                }
+                else if (whoMuchSpentMoneyString[j] == '-' && j == 0 && test == false) {
+                    test = true;
+                    throw badWhoMuchSpentMoneyStringIsNegativeNumber();
+                }
+                else if (isalpha(whoMuchSpentMoneyString[j]) && test == false) {
+                    test = true;
+                    throw badWhoMuchSpentMoneyStringIsLetter();
+                }
+                else if (ispunct(whoMuchSpentMoneyString[j]) && j != indexStep && test == false) {
+                    test = true;
+                    throw badWhoMuchSpentMoneyStringIsPunctuationMarks();
+                }
+                else if (isspace(whoMuchSpentMoneyString[j]) && test == false) {
+                    test = true;
+                    throw badWhoMuchSpentMoneyStringIsWhiteSpace();
+                }
+                else if ((whoMuchSpentMoney <= 0) && test == false) {
+                    test = true;
+                    throw badWhoMuchSpentMoneyTooSmall();
+                }
+                else if (((whoMuchSpentMoney) > budget.getBudget()) && test == false) {
+                    test = true;
+                    throw badWhoMuchSpentMoneyIsGreaterThanBudget();
+                }
             }
             break;
+        }
+        catch (badWhoMuchSpentMoneyStringPlaceDot &ref) {
+            ref.message();
+        }
+        catch (badWhoMuchSpentMoneyStringIsNegativeNumber &ref) {
+            ref.message();
+        }
+        catch (badWhoMuchSpentMoneyStringIsLetter &ref) {
+            ref.message();
+        }
+        catch (badWhoMuchSpentMoneyStringIsPunctuationMarks &ref) {
+            ref.message();
+        }
+        catch (badWhoMuchSpentMoneyStringIsWhiteSpace &ref) {
+            ref.message();
         }
         catch (badWhoMuchSpentMoneyTooSmall &ref) {
             ref.message();

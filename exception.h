@@ -5,7 +5,7 @@
 class badWhatMenuOptionIsEmpty {
     public:
     void message() {
-        std::cerr << "wartość jest pusta" << std::endl;
+        std::cerr << "wartosc jest pusta" << std::endl;
     }
 };
 
@@ -33,20 +33,20 @@ class badWhatMenuOptionIsAlpha {
 class badWhatMenuOptionIsWhiteSpace {
     public:
     void message() {
-        std::cerr << "wartość jest bialym znakiem" << std::endl;
+        std::cerr << "wartosc jest bialym znakiem" << std::endl;
     }
 };
 
 class badWhatMenuOptionIsPunctuationMarks {
     public:
     void message() {
-        std::cerr << "wartość jest znakiem drukowalnym" << std::endl;    }
+        std::cerr << "wartosc jest znakiem drukowalnym" << std::endl;    }
 };
 
 class badWhatMenuOption {
     public:
     void message() {
-        std::cerr << "wartość jest bledna" << std::endl;    }
+        std::cerr << "wartosc jest bledna" << std::endl;    }
 };
 
 //sprawdzam czy string gdzie wydalem pieniadze jest poprawny
@@ -54,7 +54,7 @@ class badWhatMenuOption {
 class badWhereSpentMoneyIsEmpty {
     public:
     void message() {
-        std::cerr << "wartość jest pusta" << std::endl;
+        std::cerr << "wartosc jest pusta" << std::endl;
     }
 };
 
@@ -66,6 +66,38 @@ class badWhereSpentMoney {
 };
 
 //sprawdzam ile wydalem pieniedzy
+
+class badWhoMuchSpentMoneyStringIsLetter {
+    public:
+    void message() {
+        std::cerr << "wartosc jest nie poprawna bo posiada litere" << std::endl;    }
+};
+
+class badWhoMuchSpentMoneyStringIsPunctuationMarks {
+    public:
+    void message() {
+        std::cerr << "wartosc jest znakiem drukowalnym" << std::endl;    }
+};
+
+class badWhoMuchSpentMoneyStringIsWhiteSpace {
+    public:
+    void message() {
+        std::cerr << "wartosc jest bialym znakiem" << std::endl;    }
+};
+
+class badWhoMuchSpentMoneyStringPlaceDot {
+    public:
+    void message() {
+        std::cerr << "przecinke w niedpowiednim miejscu" << std::endl;
+    }
+};
+
+class badWhoMuchSpentMoneyStringIsNegativeNumber {
+    public:
+    void message() {
+        std::cerr << "liczba jest ujemna" << std::endl;
+    }
+};
 
 class badWhoMuchSpentMoneyTooSmall {
     public:
@@ -83,28 +115,22 @@ class badWhoMuchSpentMoneyIsGreaterThanBudget {
 
 //sprawdzanie budzetu pobranego z pliku
 
-//class badBudgetStartIsEmpty {
-//    public:
-//    void message() {
-//        std::cerr << "wartość jest pusta" << std::endl;    }
-//};
-
 class badBudgetStringIsLetter {
     public:
     void message() {
-        std::cerr << "wartość jest nie poprawna bo posiada litere" << std::endl;    }
+        std::cerr << "wartosc jest nie poprawna bo posiada litere" << std::endl;    }
 };
 
 class badBudgetStringIsPunctuationMarks {
     public:
     void message() {
-        std::cerr << "wartość jest znakiem drukowalnym" << std::endl;    }
+        std::cerr << "wartosc jest znakiem drukowalnym" << std::endl;    }
 };
 
 class badBudgetStringIsWhiteSpace {
     public:
     void message() {
-        std::cerr << "wartość jest bialym znakiem" << std::endl;    }
+        std::cerr << "wartosc jest bialym znakiem" << std::endl;    }
 };
 
 class badBudgetStringPlaceDot {

@@ -12,8 +12,10 @@ class Budget;
 class Transaction
 {
 private:
+    int index;
     double whoMuchSpentMoney;
     std::string whereSpentMoney;
+    std::string whoMuchSpentMoneyString;
 public:
     Transaction();
 //    Transaction() :whoMuchSpentMoney(0), whereSpentMoney(NULL) {}

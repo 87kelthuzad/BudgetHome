@@ -38,29 +38,20 @@ void Budget::createFileOnBudget() {
 }
 
 void Budget::convertBudgetStringToInt() {
-//    budget = std::stoi(budgetString.c_str())*100;
     bool test = false;
     int indexStep = 0;
     int loopCount = 0;
     while (true) {
         try {
-            std::cout << "MMMM" << std::endl;
-            std::cout << budgetString << std::endl;
             for (int j = 0 ; j < budgetString.size() ; ++j) {
-                std::cout << "Ddd" << std::endl;
                 ++loopCount;
                 if (budgetString[j] == '.') {
-                    std::cout << "lopcount po ." << loopCount << std::endl;
                     indexStep = j;
                     ++index;
                     loopCount = 0;
                 }
             }
                 for (int i = 0 ; i < budgetString.size() ; ++i) {
-                    std::cout << budgetString[i] << "index" << i << std::endl;
-                    std::cout << "index" << index << std::endl;
-                    std::cout << "lopcounssssssssssssssssssssssssssSS" << std::endl;
-                    std::cout << "lopcount" << loopCount << std::endl;
                     if (test == true) {
                         test = false;
                         indexStep = 0;
@@ -73,26 +64,22 @@ void Budget::convertBudgetStringToInt() {
                         test = true;
                         throw badBudgetStringPlaceDot();
                     }
-                    else if (budgetString[0] == '-' && test == false) {
+                    else if (budgetString[i] == '-' && i == 0 && test == false) {
                         test = true;
                         throw badBudgetStringIsNegativeNumber();
                     }
                     else if (isalpha(budgetString[i]) && test == false) {
-//                        testFirstIf = true;
                         test = true;
                         throw badBudgetStringIsLetter();
                     }
-                    else if (ispunct(budgetString[i]) && indexStep != i && test == false) {
-//                        testFirstIf = true;
+                    else if (ispunct(budgetString[i]) && i != indexStep && test == false) {
                         test = true;
                         throw  badBudgetStringIsPunctuationMarks();
                     }
                     else if (isspace(budgetString[i]) && test == false) {
-//                        testFirstIf = true;
                         test = true;
                         throw badBudgetStringIsWhiteSpace();
                     }
-                    std::cout << "yyyyyyyyyyyyyyyy" << std::endl;
                 }
             budget = std::stoi(budgetString.c_str())*100;
             break;
@@ -115,72 +102,6 @@ void Budget::convertBudgetStringToInt() {
     }
 }
 
-//void Budget::setBudgetStartWithFile(std::string budget) {
-//        while (true) {
-//            try {
-//                int loopCount = 0;
-//                std::cout << budget << std::endl;
-//                for (auto i = 0 ; i < budget.size() ; ++i) {
-//                    std::cout << "dddsd" << i << std::endl;
-//                    if (isalpha(budget[i])) {
-////                        std::cin >> budgetStart;
-////                        loopCount = 1;
-//                        throw badBudgetStartIsLetter();
-////                        continue;
-//                    }
-//                    else if (ispunct(budget[i]) && budget[i] != '.') {
-//                        throw badBudgetStartIsPunctuationMarks();
-////                        continue;
-//                    }
-//                    if (isspace(budget[i])) {
-////                        std::cin >> budgetStart;
-////                        loopCount = 1;
-//                        throw  badBudgetStartIsWhiteSpace();
-////                        continue;
-//                    }
-//                }
-//                for (int i = budget.size()-1 ; i >= 0  ; --i) {
-//                    ++index;
-//                    if (ispunct(budget[i])) {
-//                        if (index > 3) {
-////                            loopCount = 1;
-//                            throw badBudgetStartPlaceDot();
-////                            continue;
-//                        }
-//                        break;
-//                    }
-//                    break;
-//                }
-//                std::cout << "dd" << loopCount << std::endl;
-//                if (loopCount == 1){
-//                    std::cin >> budget;
-//                    continue;
-//                }
-//                else if (loopCount == 0) {
-////                    budgetStart =
-//                    break;
-//                }
-////                std::cout <<  "index "<<index << std::endl;
-////                break;
-//            }
-//            catch (badBudgetStartIsLetter &ref) {
-//                ref.message();
-//                continue;
-//            }
-//            catch (badBudgetStartIsWhiteSpace &ref) {
-//                ref.message();
-//                continue;
-//            }
-//            catch (badBudgetStartIsPunctuationMarks &ref) {
-//                ref.message();
-//                continue;
-//            }
-//            catch (badBudgetStartPlaceDot &ref) {
-//                ref.message();
-//                continue;
-//            }
-//        }
-//}
 
 /*void Budget::saveRecordToHistory(std::string record) {
     std::fstream myFileHis;
@@ -293,4 +214,25 @@ void Budget::drawHeadlines() {
     myFileHistory << "+    DATA Y:M:D      + GDZIE_WYDANE +      ILE     +     BUDZET   +" << std::endl;
     myFileHistory << "+                    +              +              +              +" << std::endl;
     myFileHistory << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
+}
+
+void Budget::saveTransactionToFileHistory(Transaction &transaction , LocalTime &localTime) {
+    for (int i = 0 ; i < 67 ; ++i) {
+        if ( i == 0 || i == 22 || i == 37 || i == 52 || i == 66) {
+            myFileHistory << '+';
+        }
+        else if (i == 5 ) {
+            myFileHistory << localTime.getTime();
+        }
+        else if (i == 24) {
+            myFileHistory << transaction.getWhereSpentMoney();
+        }
+        else if (i == 39) {
+            myFileHistory << transaction.getWhoMuchSpentMoney()*0.01;
+        }
+        else if (i == 54) {
+            myFileHistory << getBudget();
+        }
+
+    }
 }

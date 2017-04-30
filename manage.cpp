@@ -10,28 +10,22 @@ Manage::~Manage(){}
 
 void Manage::mainLoop() {
     budget.openFileWithBudget();
-//    std::cout << budget.loopCount << std::endl;
     budget.convertBudgetStringToInt();
     budget.openFileHistory();
     while (true) {
-//        std::cout << localTime.getTime() << std::endl;
         ui.show();
         setWhatMenuOption();
-//        std::cout << getWhatMenuOption() << std::endl;
-        std::cout << "dd"<< budget.getBudget() << std::endl;
         switch (getWhatMenuOption()) {
             case 1:
                 transaction.PayCash(budget);
                 budget.changeBudget(transaction);
-                std::cout << "dd"<< budget.getBudget() << std::endl;
-
+                budget.saveTransactionToFileHistory(transaction , localTime);
                 break;
         }
     }
 }
 
 void Manage::setWhatMenuOption() noexcept {
-//    std::cin.ignore(1000, '\n');
     while (true) {
         try {
             getline(std::cin , whatMenuOptionString);
