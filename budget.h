@@ -30,6 +30,7 @@ private:
     std::string nameHistoryFile;
     std::string saveRecordTransaction;
     std::string helpString;
+    std::string helpStringWhoMuchSpenytMoney;
     std::stringstream setPrecisionSpentMoney;
 public:
     Budget();
