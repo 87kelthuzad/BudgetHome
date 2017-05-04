@@ -17,9 +17,12 @@ void Manage::mainLoop() {
         setWhatMenuOption();
         switch (getWhatMenuOption()) {
             case 1:
-                transaction.PayCash(budget);
+                transaction.payCash(budget);
                 budget.changeBudget(transaction);
                 budget.saveTransactionToFileHistory(transaction , localTime);
+                break;
+            case 2:
+
                 break;
         }
     }

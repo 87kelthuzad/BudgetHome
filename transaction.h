@@ -12,22 +12,25 @@ class Budget;
 class Transaction
 {
 private:
-    int index;
+//    int index;
+    bool test = false;
+    int indexStep = 0;
+    int loopCount = 0;
+
     double whoMuchSpentMoney;
     std::string whereSpentMoney;
     std::string whoMuchSpentMoneyString;
 public:
     Transaction();
-//    Transaction() :whoMuchSpentMoney(0), whereSpentMoney(NULL) {}
-//    Transaction(double whoMuchSpentMoney, std::string whereSpentMoney);
     ~Transaction();
-    void PayCash(Budget &budget);
+    void payCash(Budget &budget);
+    void payCard(Budget &budget , Transaction &transaction);
 
     void setWhereSpentMoney() noexcept;
     void setWhoMuchSpentMoney(Budget &budget) noexcept ;
 
     inline std::string getWhereSpentMoney() {return whereSpentMoney;}
-    inline int getWhoMuchSpentMoney() {return  whoMuchSpentMoney*100;}
+    inline int getWhoMuchSpentMoney() {return  whoMuchSpentMoney;}
 };
 
 #endif // TRANSACTION_H
