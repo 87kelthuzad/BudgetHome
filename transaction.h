@@ -7,7 +7,9 @@
 //#include <ctime>
 #include "budget.h"
 #include "exception.h"
+#include "interface.h"
 class Budget;
+class Interface;
 
 class Transaction
 {
@@ -24,7 +26,7 @@ public:
     Transaction();
     ~Transaction();
     void payCash(Budget &budget);
-    void payCard(Budget &budget , Transaction &transaction);
+    void payCard(Budget &budget , Transaction &transaction , Interface &interface);
 
     void setWhereSpentMoney() noexcept;
     void setWhoMuchSpentMoney(Budget &budget) noexcept ;

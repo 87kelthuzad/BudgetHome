@@ -9,6 +9,7 @@ Manage::Manage(){}
 Manage::~Manage(){}
 
 void Manage::mainLoop() {
+    budget.openFileWithSmartSaver();
     budget.openFileWithBudget();
     budget.convertBudgetStringToInt();
     budget.openFileHistory();
@@ -22,7 +23,7 @@ void Manage::mainLoop() {
                 budget.saveTransactionToFileHistory(transaction , localTime);
                 break;
             case 2:
-
+                transaction.payCard(budget , transaction , ui);
                 break;
         }
     }

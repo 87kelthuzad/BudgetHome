@@ -20,7 +20,6 @@ void Transaction::payCash(Budget &budget) {
     std::cout << getWhereSpentMoney() << std::endl;
     std::cout << "Ile zostalow wydanych pieniedzy: " << std::endl;
     getline(std::cin , whoMuchSpentMoneyString);
-//    whoMuchSpentMoney = std::stod(whoMuchSpentMoneyString.c_str());
     setWhoMuchSpentMoney(budget);
     std::cout << getWhoMuchSpentMoney() << std::endl;
 }
@@ -33,10 +32,10 @@ void Transaction::setWhereSpentMoney() noexcept {
             if (whereSpentMoney.size() == 0) {
                 throw badWhereSpentMoneyIsEmpty();
             }
-            else if (whereSpentMoney == "rynek" || whereSpentMoney == "Rynek"
-                || whereSpentMoney == "sklep" || whereSpentMoney == "Sklep"
-                || whereSpentMoney == "inne" || whereSpentMoney == "Inne") {
-
+            else if (whereSpentMoney    == "rynek"      || whereSpentMoney == "Rynek"
+                    || whereSpentMoney  == "sklep"      || whereSpentMoney == "Sklep"
+                    || whereSpentMoney  == "inne"       || whereSpentMoney == "Inne"
+                    || whereSpentMoney  == "allegro"    || whereSpentMoney == "Allegro") {
             }
             else {
                 throw badWhereSpentMoney();
@@ -55,7 +54,6 @@ void Transaction::setWhereSpentMoney() noexcept {
 void Transaction::setWhoMuchSpentMoney(Budget &budget) noexcept {
     while (true) {
         try {
-            std::cout << "MMM" << std::endl;
             indexStep = 0;
             for (int i = 0 ; i < whoMuchSpentMoneyString.size() ; ++i) {
                 ++loopCount;
@@ -65,14 +63,13 @@ void Transaction::setWhoMuchSpentMoney(Budget &budget) noexcept {
                 }
             }
             if (indexStep == 0) {
-                indexStep = 100;
+                indexStep = 100; // by indexStep napewno znajdowała sie poza zakresem
             }
             if (test == true) {
                 loopCount = 0;
                 test = false;
                 std::cout << "Podaj ile wydales pieniedzy: " << std::endl;
                 getline(std::cin, whoMuchSpentMoneyString);
-//                whoMuchSpentMoney = std::stod(whoMuchSpentMoneyString.c_str())*100;
                 continue;
             }
             for (int j = 0; j < whoMuchSpentMoneyString[j] ; ++j) {
@@ -96,14 +93,15 @@ void Transaction::setWhoMuchSpentMoney(Budget &budget) noexcept {
                     test = true;
                     throw badWhoMuchSpentMoneyStringIsWhiteSpace();
                 }
-//                else if ((whoMuchSpentMoney <= 0) && test == false) {
-//                    test = true;
-//                    throw badWhoMuchSpentMoneyTooSmall();
-//                }
-//                else if (((whoMuchSpentMoney) > budget.getBudget()) && test == false) {
-//                    test = true;
-//                    throw badWhoMuchSpentMoneyIsGreaterThanBudget();
-//                }
+                whoMuchSpentMoney = std::stod(whoMuchSpentMoneyString.c_str())*100;
+                if ((whoMuchSpentMoney <= 0) && test == false) {
+                    test = true;
+                    throw badWhoMuchSpentMoneyTooSmall();
+                }
+                else if (((whoMuchSpentMoney) > budget.getBudget()) && test == false) {
+                    test = true;
+                    throw badWhoMuchSpentMoneyIsGreaterThanBudget();
+                }
             }
             whoMuchSpentMoney = 0;
             whoMuchSpentMoney = std::stod(whoMuchSpentMoneyString.c_str())*100;
@@ -134,18 +132,15 @@ void Transaction::setWhoMuchSpentMoney(Budget &budget) noexcept {
     }
 }
 
-void Transaction::payCard(Budget &budget , Transaction &transaction) {
+void Transaction::payCard(Budget &budget , Transaction &transaction, Interface &ui) {
     std::cout << budget.getBudget() << std::endl;
-
     std::cout << "Gdzie zostaly wydane pieniadze: " << std::endl;
-    std::cout << "Sklep , Rynek , Inne" << std::endl;
+    std::cout << "Sklep , Allegro , Inne" << std::endl;
     setWhereSpentMoney();
-//    std::cout << getWhereSpentMoney() << std::endl;
     std::cout << "Ile zostalow wydanych pieniedzy: " << std::endl;
-
     getline(std::cin , whoMuchSpentMoneyString);
-    whoMuchSpentMoney = std::stod(whoMuchSpentMoneyString.c_str());
     setWhoMuchSpentMoney(budget);
+    ui.showMenuWhoPayCard();
     std::cout << getWhoMuchSpentMoney() << std::endl;
     budget.SplitIntoIntegerAndFractionParts(transaction);
 }

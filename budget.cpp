@@ -12,7 +12,6 @@ Budget::Budget() {}
 Budget::~Budget() {}
 
 void Budget::openFileWithBudget() {
-    std::cout << getNameBudgetFile(localTime) << std::endl;
         myFileBudget.open(getNameBudgetFile(localTime), std::ios::in);
         if (myFileBudget.is_open()) {
             myFileBudget.seekg(0 , std::ios::end);
@@ -32,7 +31,6 @@ void Budget::openFileWithBudget() {
 }
 
 void Budget::createFileOnBudget() {
-    std::cout << getNameBudgetFile(localTime) << std::endl;
     myFileBudget.open(getNameBudgetFile(localTime) , std::ios::out);
     std::cout << "Podaj budzet" << std::endl;
     std::getline(std::cin, budgetString);
@@ -61,8 +59,6 @@ void Budget::convertBudgetStringToInt() noexcept{
                 continue;
             }
             for (int i = 0 ; i < budgetString.size() ; ++i) {
-                std::cout << "indexx " << i << std::endl;
-                std::cout << "loopC " << loopCount << std::endl;
                 if (loopCount > 2 && loopCount != budgetString.size() && test == false) {
                     test = true;
                     throw badBudgetStringPlaceDot();
@@ -111,6 +107,7 @@ void Budget::changeBudget(Transaction &transaction) {
 
 void Budget::openFileHistory() {
     myFileHistory.open( getNameHistoryFile(localTime) , std::ios::app);
+    //TODO brak sprawdzenie czy plik faktycznie się otworzyl
     myFileHistory.seekg(0 , std::ios::end);
     if (myFileHistory.tellg() == 0) {
         drawHeadlines();
@@ -146,8 +143,71 @@ void Budget::saveTransactionToFileHistory(Transaction &transaction , LocalTime &
                      "           " << helpStringWhoMuchSpenytMoney << "          " << helpStringBudget << std::endl;
 }
 
+void Budget::openFileWithSmartSaver() {
+    myFileSmartSaver.open(getNameSmartSaverFile(localTime) , std::ios::in);
+    do {
+        if (myFileSmartSaver.is_open()) {
+            myFileSmartSaver.seekg(std::ios::end);
+            if (myFileSmartSaver.tellg() == 0) {
+                smartSaverMateusz = 0.0;
+                smartSaverJustyna = 0.0;
+            }
+            else {
+                myFileSmartSaver.seekg(std::ios::beg);
+                while ( !myFileSmartSaver.eof()) {
+                       myFileSmartSaver >> smartSaverMateusz;
+                       myFileSmartSaver >> smartSaverJustyna;
+                }
+            }
+            test = true;
+        }
+        else {
+            createFileSmartSaver();
+        }
+    } while (test != true);
+    test = false;
+}
+
+void Budget::createFileSmartSaver() {
+    myFileSmartSaver.close();
+    myFileSmartSaver.open(getNameSmartSaverFile(localTime) , std::ios::out );
+    if (myFileSmartSaver.is_open()) {
+        myFileSmartSaver.close();
+    }
+    else {
+        std::cerr << "Pliku nie mozna utworzyc" << std::endl;
+    }
+}
+
 void Budget::SplitIntoIntegerAndFractionParts(Transaction &transaction) {
     fractionPart = modf( transaction.getWhoMuchSpentMoney() , &integerPart);
     std::cout << "FFF:" << fractionPart << std::endl;
     std::cout << "III:" << integerPart << std::endl;
+}
+
+void Budget::verificationSmartSaver(Transaction &transaction) {
+    helpIntegerPart = integerPart;
+    helpIntegerPart %= 10;
+    std::cout << "helpIntegerPart " << helpIntegerPart << std::endl;
+    if ( fractionPart < 1) {
+        helpFractionPart = 1 - fractionPart;
+        helpIntegerPart += 1;
+        if (helpIntegerPart == 0 || helpIntegerPart == 5) {}
+        else if (helpIntegerPart < 5) {
+            smartSaver = 5 - helpIntegerPart;
+        }
+        else if (helpIntegerPart < 10) {
+            smartSaver = 10 - helpIntegerPart;
+        }
+    }
+    else if (fractionPart == 0) {
+        if (helpIntegerPart == 0 || helpIntegerPart == 5) {}
+        else if (helpIntegerPart < 5) {
+            smartSaver = 5 - helpIntegerPart;
+        }
+        else if (helpIntegerPart < 10) {
+            smartSaver = 10 - helpIntegerPart;
+        }
+    }
+    smartSaver += helpFractionPart;
 }

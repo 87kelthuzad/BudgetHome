@@ -11,9 +11,8 @@ private:
 public:
     Interface();
     ~Interface();
-    int optionMenu();
     void show();
-    void DrawMenu();
+    void showMenuWhoPayCard();
 };
 
 #endif // INTERFACE_H
