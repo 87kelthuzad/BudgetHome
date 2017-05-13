@@ -1,7 +1,7 @@
 #ifndef EXCEPTION_H
 #define EXCEPTION_H
 #include <iostream>
-//sprawdza czy poprawna zostala wybran opcja z menu
+//sprawdza czy poprawna zostala wybran opcja z menu i menu kto placi karta
 class badWhatMenuOptionIsEmpty {
     public:
     void message() {
@@ -146,5 +146,6 @@ class badBudgetStringIsNegativeNumber {
         std::cerr << "liczba jest ujemna" << std::endl;
     }
 };
+
 
 #endif // EXCEPTION_H

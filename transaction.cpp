@@ -141,6 +141,14 @@ void Transaction::payCard(Budget &budget , Transaction &transaction, Interface &
     getline(std::cin , whoMuchSpentMoneyString);
     setWhoMuchSpentMoney(budget);
     ui.showMenuWhoPayCard();
-    std::cout << getWhoMuchSpentMoney() << std::endl;
-    budget.SplitIntoIntegerAndFractionParts(transaction);
+    switch (ui.getChanceMenuWhoPayCard()) {
+        case 1:
+            std::cout << "budget" << budget.getBudget() << std::endl;
+            budget.SplitIntoIntegerAndFractionParts(transaction);
+            budget.verificationSmartSaver(transaction);
+            budget.setSmartSaverMateusz();
+            budget.changeBudgetAfterSmartSaver(transaction);
+            std::cout << "budget" << budget.getBudget() << std::endl;
+            break;
+    }
 }

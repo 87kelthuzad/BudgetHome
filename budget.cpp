@@ -180,23 +180,27 @@ void Budget::createFileSmartSaver() {
 }
 
 void Budget::SplitIntoIntegerAndFractionParts(Transaction &transaction) {
-    fractionPart = modf( transaction.getWhoMuchSpentMoney() , &integerPart);
-    std::cout << "FFF:" << fractionPart << std::endl;
-    std::cout << "III:" << integerPart << std::endl;
+    integerPart = transaction.getWhoMuchSpentMoney();
+    fractionPart = integerPart % 100;
+    integerPart -= fractionPart;
 }
 
 void Budget::verificationSmartSaver(Transaction &transaction) {
-    helpIntegerPart = integerPart;
+    helpIntegerPart = integerPart * 0.01;
     helpIntegerPart %= 10;
-    std::cout << "helpIntegerPart " << helpIntegerPart << std::endl;
-    if ( fractionPart < 1) {
-        helpFractionPart = 1 - fractionPart;
-        helpIntegerPart += 1;
+    if ( fractionPart < 100 && fractionPart > 0) {
+        helpFractionPart = 100 - fractionPart;
+        if (helpIntegerPart != 4 && helpIntegerPart != 9 ){
+            helpIntegerPart += 1;
+        }
         if (helpIntegerPart == 0 || helpIntegerPart == 5) {}
-        else if (helpIntegerPart < 5) {
+        else if (helpIntegerPart == 4 || helpIntegerPart == 9) {
+            smartSaver = 0;
+        }
+        else if (helpIntegerPart < 5 ) {
             smartSaver = 5 - helpIntegerPart;
         }
-        else if (helpIntegerPart < 10) {
+        else if (helpIntegerPart < 10 ) {
             smartSaver = 10 - helpIntegerPart;
         }
     }
@@ -209,5 +213,28 @@ void Budget::verificationSmartSaver(Transaction &transaction) {
             smartSaver = 10 - helpIntegerPart;
         }
     }
-    smartSaver += helpFractionPart;
+    smartSaver += helpFractionPart*0.01;
+    std::cout << "smart" << smartSaver << std::endl;
+}
+
+void Budget::setSmartSaverMateusz() {
+    smartSaverMateusz += smartSaver;
+    smartSaver = 0;
+}
+
+void Budget::setSmartSaverJustyna() {
+    smartSaverJustyna += smartSaver;
+    smartSaver = 0;
+}
+
+void Budget::changeBudgetAfterSmartSaver(Transaction &transaction) {
+    std::cout << "budget" << budget << std::endl;
+    std::cout << "spentMoney" << transaction.getWhoMuchSpentMoney() << std::endl;
+    std::cout << "fraction" << fractionPart << std::endl;
+    helpIntegerPart -= 1;
+    std::cout << "helpint" << helpIntegerPart << std::endl;
+    std::cout << "spmo - fr" <<  transaction.getWhoMuchSpentMoney() - fractionPart << std::endl;
+    std::cout << "spmo - fr + int" << (transaction.getWhoMuchSpentMoney() - fractionPart) - helpIntegerPart*100 << std::endl;
+    std::cout << "+500" << (((transaction.getWhoMuchSpentMoney() - fractionPart) - helpIntegerPart*100 ) + 500) << std::endl;
+    budget = budget - (((transaction.getWhoMuchSpentMoney() - fractionPart) - helpIntegerPart*100 ) + 500);
 }

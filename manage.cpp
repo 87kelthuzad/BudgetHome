@@ -24,6 +24,7 @@ void Manage::mainLoop() {
                 break;
             case 2:
                 transaction.payCard(budget , transaction , ui);
+                budget.saveTransactionToFileHistory(transaction , localTime);
                 break;
         }
     }

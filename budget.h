@@ -28,14 +28,14 @@ private:
     double helpSpentMoney = 0.0;
     double helpBudget = 0.0;
     int helpIntegerPart = 0;
-    double helpFractionPart = 0.0;
+    int helpFractionPart = 0.0;
     double smartSaver = 0.0;
 
     double smartSaverMateusz = 0.0;
     double smartSaverJustyna = 0.0;
 
-    double fractionPart = 0.0;
-    double integerPart = 0.0;
+    int fractionPart = 0.0;
+    int integerPart = 0.0;
 
     std::fstream myFileBudget;
     std::fstream myFileHistory;
@@ -51,7 +51,6 @@ private:
     std::stringstream setPrecision;
 
 public:
-
     Budget();
     ~Budget();
 
@@ -63,9 +62,13 @@ public:
     void convertBudgetStringToInt() noexcept;
     void SplitIntoIntegerAndFractionParts(Transaction &transaction);
     void changeBudget(Transaction &transaction);
+    void changeBudgetAfterSmartSaver(Transaction &transaction);
     void drawHeadlines();
     void saveTransactionToFileHistory(Transaction &transaction , LocalTime &localTime);
     void verificationSmartSaver(Transaction &transaction);
+
+    void setSmartSaverMateusz();
+    void setSmartSaverJustyna();
 
     inline int getBudget() {return  budget;}
     inline std::string getNameBudgetFile(LocalTime &localTime) {return nameBudgetFile = "budgetM:" + localTime.getTimeMonth();}
@@ -73,6 +76,9 @@ public:
         return nameHistoryFile = "historyY:" + localTime.getTimeYear() + "M:" + localTime.getTimeMonth();}
     inline std::string getNameSmartSaverFile(LocalTime &localTime) {
         return nameSmartSaverFile = "smartSaverY:" + localTime.getTimeYear() + "M:" + localTime.getTimeMonth();}
+    inline double getSmartSaver() { return smartSaver;}
+    inline double getSmartSaverMateusz() {return smartSaverMateusz;}
+    inline double getSmartSaverJustyna() {return smartSaverJustyna;}
 };
 
 #endif // BUDGET_H
